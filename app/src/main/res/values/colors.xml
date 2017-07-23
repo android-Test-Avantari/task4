@@ -3,4 +3,13 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="back">#f8f5f6</color>
+    <color name="lightText">#bebebf</color>
+    <color name="darkText">#2e2e2e</color>
+    <color name="pink">#cf2156</color>
+    <color name="orange">#ec5a13</color>
+    <color name="line">#f2ffc0</color>
+    <color name="head">#f8f5f6</color>
+    <color name="lightPink">#ef5f8b</color>
+    <color name="transp">#00ef5f8b</color>
 </resources>
