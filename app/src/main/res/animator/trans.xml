@@ -1,0 +1,7 @@
+<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="4000"
+    android:propertyName="backgroundColor"
+    android:repeatCount="infinite"
+    android:repeatMode="reverse"
+    android:valueFrom="@color/pink"
+    android:valueTo="@color/lightPink" />

@@ -1,13 +1,17 @@
 package com.mirza.avantari.task;
 
+import android.animation.AnimatorInflater;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -19,6 +23,8 @@ public class MainActivity extends Activity {
     double r = 180.5;
     private Thread progressThread;
     private Handler handler;
+    ImageView image;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +42,10 @@ public class MainActivity extends Activity {
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        rate.setText(r + " kWh");
+        rate.setText(r + "");
 
 
         type = Typeface.createFromAsset(getAssets(), "round.ttf");
-
         text1.setTypeface(type);
         text2.setTypeface(type);
         text3.setTypeface(type);
@@ -49,16 +54,38 @@ public class MainActivity extends Activity {
         rate.setTypeface(type);
 
         handler = new Handler();
+
+        ObjectAnimator objAnim = (ObjectAnimator) AnimatorInflater.loadAnimator(this, R.animator.trans);
+        objAnim.setTarget(frame1);
+        objAnim.setEvaluator(new ArgbEvaluator());
+        objAnim.start();
+
     }
 
     public void onChartView(View v) {
+
         r = 180.5;
 
-        msg.setText("Last 12 hours average\nelectricity consumption");
+        Animation midAnim = AnimationUtils.loadAnimation(this, R.anim.mid_anim);
+        fab.startAnimation(midAnim);
         fab.setVisibility(View.GONE);
 
         frame1.setVisibility(View.GONE);
+        msg.setText("Last 12 hours average\nelectricity consumption");
         frame2.setVisibility(View.VISIBLE);
+
+        ObjectAnimator objAnim = (ObjectAnimator) AnimatorInflater.loadAnimator(this, R.animator.back);
+        objAnim.setTarget(frame2);
+        objAnim.setEvaluator(new ArgbEvaluator());
+        objAnim.start();
+
+        Animation topTobottom = AnimationUtils.loadAnimation(this, R.anim.top_bottom);
+        msg.startAnimation(topTobottom);
+
+        image = (ImageView) findViewById(R.id.imageView);
+        Animation animation1 = AnimationUtils.loadAnimation(this, R.anim.bounce);
+        animation1.setStartOffset(600);
+        image.startAnimation(animation1);
 
         progressThread = new Thread(new Runnable() {
             @Override
@@ -77,7 +104,7 @@ public class MainActivity extends Activity {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            rate.setText(r + " kWh");
+                            rate.setText(r + "");
                             if (r == 90.5)
                                 return;
                         }
@@ -92,12 +119,19 @@ public class MainActivity extends Activity {
     }
 
     public void doBack(View v) {
-        msg.setText("Total electricity consumption\nof Galaxy SOHO");
+
         r = 90.5;
 
-        fab.setVisibility(View.VISIBLE);
         frame2.setVisibility(View.GONE);
+        msg.setText("Total electricity consumption\nof Galaxy SOHO");
         frame1.setVisibility(View.VISIBLE);
+
+        Animation topTobottom = AnimationUtils.loadAnimation(this, R.anim.top_bottom);
+        msg.startAnimation(topTobottom);
+
+        fab.setVisibility(View.VISIBLE);
+        Animation downAnim = AnimationUtils.loadAnimation(this, R.anim.down_anim);
+        fab.startAnimation(downAnim);
 
         progressThread = new Thread(new Runnable() {
             @Override
@@ -116,7 +150,7 @@ public class MainActivity extends Activity {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            rate.setText(r + " kWh");
+                            rate.setText(r + "");
                             if (r == 180.5) {
                                 return;
                             }
